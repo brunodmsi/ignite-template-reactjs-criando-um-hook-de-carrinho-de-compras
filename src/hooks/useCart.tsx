@@ -49,6 +49,10 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       } else {
         const response = await api.get(`/products/${productId}`);
 
+        if (!response.data) {
+          throw new Error('Produto não encontrado');
+        }
+
         const normalizedProduct: Product = {
           ...response.data,
           amount: 1
@@ -93,6 +97,10 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       }
 
       const response = await api.get(`/stock/${productId}`);
+
+      if (!response.data) {
+        throw new Error('Produto não encontrado');
+      }
 
       const stockData = response.data;
       if (stockData.amount <= amount) {
